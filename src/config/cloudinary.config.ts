@@ -11,9 +11,9 @@ cloudinary.config({
 
 export const uploadToCloudinary = async (filePath: string): Promise<string> => {
     if (!fs.existsSync(filePath)) {
-      throw new Error('File does not exist');
+      throw Boom.notFound("File not found");
     }
-  
+
     try {
       const result = await cloudinary.uploader.upload(filePath);
       return result.secure_url;
