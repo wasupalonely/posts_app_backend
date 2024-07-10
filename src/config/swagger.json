@@ -1,0 +1,1053 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de Ejemplo",
+    "description": "Esta es una API de ejemplo para demostrar Swagger",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Iniciar sesión",
+        "description": "Autentica un usuario y retorna un token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Autenticación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Registrar usuario",
+        "description": "Registra un nuevo usuario",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuario registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "Obtiene una lista de categorías",
+        "description": "Retorna una lista de categorías",
+        "responses": {
+          "200": {
+            "description": "Lista de categorías",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crea una nueva categoría",
+        "description": "Agrega una nueva categoría a la base de datos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoría creada"
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "summary": "Obtiene una categoría por ID",
+        "description": "Retorna una sola categoría",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoría encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categoría no encontrada"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualiza una categoría existente",
+        "description": "Actualiza los datos de una categoría existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Categoría actualizada"
+          },
+          "404": {
+            "description": "Categoría no encontrada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina una categoría",
+        "description": "Elimina una categoría por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoría eliminada"
+          },
+          "404": {
+            "description": "Categoría no encontrada"
+          }
+        }
+      }
+    },
+    "/categories/name/{name}": {
+      "get": {
+        "summary": "Obtiene una categoría por nombre",
+        "description": "Retorna una categoría por su nombre",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoría encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categoría no encontrada"
+          }
+        }
+      }
+    },
+    "/comments": {
+      "get": {
+        "summary": "Obtiene una lista de comentarios",
+        "description": "Retorna una lista de comentarios",
+        "responses": {
+          "200": {
+            "description": "Lista de comentarios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Comment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crea un nuevo comentario",
+        "description": "Agrega un nuevo comentario a la base de datos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comentario creado"
+          }
+        }
+      }
+    },
+    "/comments/{id}": {
+      "get": {
+        "summary": "Obtiene un comentario por ID",
+        "description": "Retorna un solo comentario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comentario encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Comentario no encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualiza un comentario existente",
+        "description": "Actualiza los datos de un comentario existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comentario actualizado"
+          },
+          "404": {
+            "description": "Comentario no encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina un comentario",
+        "description": "Elimina un comentario por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comentario eliminado"
+          },
+          "404": {
+            "description": "Comentario no encontrado"
+          }
+        }
+      }
+    },
+    "/comments/post/{postId}": {
+      "get": {
+        "summary": "Obtiene comentarios por ID de publicación",
+        "description": "Retorna comentarios de una publicación por su ID",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comentarios encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Comment"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Comentarios no encontrados"
+          }
+        }
+      }
+    },
+    "/comments/{id}/like": {
+      "post": {
+        "summary": "Da like a un comentario",
+        "description": "Agrega un like a un comentario por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Like agregado"
+          },
+          "404": {
+            "description": "Comentario no encontrado"
+          }
+        }
+      }
+    },
+    "/messages/message": {
+      "post": {
+        "summary": "Envía un mensaje",
+        "description": "Envía un mensaje a otro usuario",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sender": {
+                    "type": "string"
+                  },
+                  "receiver": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Mensaje enviado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al enviar mensaje"
+          }
+        }
+      }
+    },
+    "/messages/messages": {
+      "get": {
+        "summary": "Obtiene mensajes entre dos usuarios",
+        "description": "Retorna mensajes entre dos usuarios",
+        "parameters": [
+          {
+            "name": "user1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user2",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mensajes encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al obtener mensajes"
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "summary": "Obtiene una lista de publicaciones",
+        "description": "Retorna una lista de publicaciones",
+        "responses": {
+          "200": {
+            "description": "Lista de publicaciones",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Post"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crea una nueva publicación",
+        "description": "Agrega una nueva publicación a la base de datos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Publicación creada"
+          }
+        }
+      }
+    },
+    "/posts/{id}": {
+      "get": {
+        "summary": "Obtiene una publicación por ID",
+        "description": "Retorna una sola publicación",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Publicación encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Publicación no encontrada"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualiza una publicación existente",
+        "description": "Actualiza los datos de una publicación existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Publicación actualizada"
+          },
+          "404": {
+            "description": "Publicación no encontrada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina una publicación",
+        "description": "Elimina una publicación por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Publicación eliminada"
+          },
+          "404": {
+            "description": "Publicación no encontrada"
+          }
+        }
+      }
+    },
+    "/posts/{id}/like": {
+      "post": {
+        "summary": "Da like a una publicación",
+        "description": "Agrega un like a una publicación por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Like agregado"
+          },
+          "404": {
+            "description": "Publicación no encontrada"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Obtiene una lista de usuarios",
+        "description": "Retorna una lista de usuarios",
+        "responses": {
+          "200": {
+            "description": "Lista de usuarios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crea un nuevo usuario",
+        "description": "Agrega un nuevo usuario a la base de datos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuario creado"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Obtiene un usuario por ID",
+        "description": "Retorna un solo usuario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualiza un usuario existente",
+        "description": "Actualiza los datos de un usuario existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario actualizado"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina un usuario",
+        "description": "Elimina un usuario por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario eliminado"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        }
+      }
+    },
+    "/users/{id}/toggle-follow": {
+      "post": {
+        "summary": "Seguir/Dejar de seguir usuario",
+        "description": "Alterna el estado de seguimiento entre dos usuarios",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Seguimiento alternado"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Post": {
+        "type": "object",
+        "required": [
+          "authorId",
+          "content"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123"
+          },
+          "authorId": {
+            "type": "string",
+            "example": "12345"
+          },
+          "content": {
+            "type": "string",
+            "example": "Este es el contenido de la publicación"
+          },
+          "media": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["imagen1.jpg", "video1.mp4"]
+          },
+          "likes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["123", "456"]
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["789", "101112"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "username",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123"
+          },
+          "username": {
+            "type": "string",
+            "example": "john_doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "hashedpassword"
+          },
+          "profilePicture": {
+            "type": "string",
+            "example": "profile.jpg"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Este es mi perfil"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123"
+          },
+          "name": {
+            "type": "string",
+            "example": "Technology"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is a technology category"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "required": [
+          "postId",
+          "authorId",
+          "content"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123"
+          },
+          "postId": {
+            "type": "string",
+            "example": "456"
+          },
+          "authorId": {
+            "type": "string",
+            "example": "789"
+          },
+          "content": {
+            "type": "string",
+            "example": "This is a comment"
+          },
+          "likes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["123", "456"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "required": [
+          "sender",
+          "receiver",
+          "message"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123"
+          },
+          "sender": {
+            "type": "string",
+            "example": "user1"
+          },
+          "receiver": {
+            "type": "string",
+            "example": "user2"
+          },
+          "message": {
+            "type": "string",
+            "example": "Hello!"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-07T10:00:00Z"
+          }
+        }
+      }
+    }
+  }
+}
