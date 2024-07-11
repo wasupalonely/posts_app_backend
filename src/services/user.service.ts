@@ -2,6 +2,7 @@ import Boom from "@hapi/boom";
 import { User } from '../models/User';
 import { IUser } from "../types";
 import { Post } from "../models/Post";
+import { uploadImage } from "../utils/utils";
 
 class UserService {
   async createUser(user: IUser): Promise<IUser> {
@@ -10,6 +11,23 @@ class UserService {
       return newUser.toObject() as IUser;
     } catch (error) {
       throw Boom.badRequest('Error creating user');
+    }
+  }
+
+  async updateUserPhoto(id: string, path: string) {
+    try {
+
+      const userFound = await User.findById(id);
+
+      if (!userFound) {
+        throw Boom.notFound('User not found');
+      }
+
+      const imageUrl = await uploadImage(path);
+      const user = await User.findByIdAndUpdate(id, { profilePicture: imageUrl }, { new: true });
+      return user;
+    } catch (error) {
+      throw Boom.badRequest('Error updating user');
     }
   }
 

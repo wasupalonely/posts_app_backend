@@ -80,6 +80,7 @@ commentRouter.post(
 
 commentRouter.patch(
   "/:id",
+  passport.authenticate("jwt", { session: false }),
   validatorHandler(getCommentSchema, "params"),
   validatorHandler(updateCommentSchema, "body"),
   async (req, res, next) => {
@@ -95,7 +96,8 @@ commentRouter.patch(
 
 commentRouter.delete(
   "/:id",
-  validatorHandler(getCommentSchema, "params"), 
+  passport.authenticate("jwt", { session: false }),
+  validatorHandler(getCommentSchema, "params"),
   async (req, res, next) => {
   try {
     const { id } = req.params;

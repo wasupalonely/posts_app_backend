@@ -16,7 +16,6 @@ export interface IUser {
   __v?: number;
 }
 
-
 export interface IPost {
   authorId: string;
   content: string;

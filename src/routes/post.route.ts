@@ -4,6 +4,7 @@ import validatorHandler from "../middlewares/validator.handler";
 import { createPostSchema, getPostsSchema, likePostSchema, updatePostSchema } from "../schemas/post.schema";
 import multer from "multer";
 import passport from "passport";
+import { uploadImage } from "../utils/utils";
 
 const postRouter = express.Router();
 
@@ -46,7 +47,7 @@ postRouter.post(
       }
 
       const imageUrls = await Promise.all(
-        imageFiles.map((file) => postService.uploadImage(file.path))
+        imageFiles.map((file) => uploadImage(file.path))
       );
 
       const post = await postService.createPost({

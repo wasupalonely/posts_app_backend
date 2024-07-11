@@ -7,10 +7,14 @@ import {
   updateUserSchema,
 } from "../schemas/user.schema";
 import validatorHandler from "../middlewares/validator.handler";
+import multer from "multer";
+import passport from "passport";
 
 const userRouter = express.Router();
 
 const userService = new UserService();
+
+const upload = multer({ dest: "uploads/" });
 
 userRouter.get("/", async (req, res) => {
   const users = await userService.getAllUsers();
@@ -19,6 +23,7 @@ userRouter.get("/", async (req, res) => {
 
 userRouter.get(
   "/:id",
+  passport.authenticate("jwt", { session: false }),
   validatorHandler(getUserSchema, "params"),
   async (req, res, next) => {
     try {
@@ -44,8 +49,25 @@ userRouter.post(
   },
 );
 
+userRouter.patch(
+  "/:id/update-photo",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("profile-pic"),
+  validatorHandler(getUserSchema, "params"),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const user = await userService.updateUserPhoto(id, req.file!.path);
+      res.status(200).json(user);
+    } catch (err: any) {
+      next(err);
+    }
+  },
+)
+
 userRouter.post(
   "/:id/toggle-follow",
+  passport.authenticate("jwt", { session: false }),
   validatorHandler(getUserSchema, "params"),
   validatorHandler(toggleFollowSchema, "body"),
   async (req, res, next) => {
@@ -62,6 +84,7 @@ userRouter.post(
 
 userRouter.post(
   "/:id/bookmark",
+  passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -76,6 +99,7 @@ userRouter.post(
 
 userRouter.put(
   "/:id",
+  passport.authenticate("jwt", { session: false }),
   validatorHandler(getUserSchema, "params"),
   validatorHandler(updateUserSchema, "body"),
   async (req, res, next) => {
@@ -91,6 +115,7 @@ userRouter.put(
 
 userRouter.delete(
   "/:id",
+  passport.authenticate("jwt", { session: false }),
   validatorHandler(getUserSchema, "params"),
   async (req, res, next) => {
     try {

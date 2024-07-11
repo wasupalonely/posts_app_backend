@@ -5,7 +5,7 @@ import { IPost } from "../types";
 import { uploadToCloudinary } from "../config/cloudinary.config";
 
 class PostService {
-  
+
   private userService = new UserService();
   async getPosts() {
     const posts = await Post.find();
@@ -72,16 +72,6 @@ class PostService {
       }
     } catch (error) {
       throw Boom.badRequest("Error liking post");
-    }
-  }
-
-  async uploadImage(filePath: string): Promise<string> {
-    try {
-      const imageUrl = await uploadToCloudinary(filePath);
-      return imageUrl;
-    } catch (error) {
-      console.error("Upload Image Error:", error);
-      throw Boom.badRequest("Error uploading image");
     }
   }
 }
