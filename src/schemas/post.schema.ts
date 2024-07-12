@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { IPost } from "../types";
 
-const id = Joi.string().uuid()
+const id = Joi.string()
 const authorId = Joi.string()
 const content = Joi.string()
 const media = Joi.array().items(Joi.string())

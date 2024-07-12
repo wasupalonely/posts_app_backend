@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const id = Joi.string().uuid();
+const id = Joi.string();
 const username = Joi.string();
 const email = Joi.string();
 const password = Joi.string().min(6).max(20);
@@ -9,7 +9,7 @@ const bio = Joi.string();
 const role = Joi.string().valid("user", "admin");
 const createdAt = Joi.date();
 const updatedAt = Joi.date();
-const userId = Joi.string().uuid();
+const userId = Joi.string();
 
 export const createUserSchema = Joi.object({
     username: username.required(),
