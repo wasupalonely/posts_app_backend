@@ -31,6 +31,31 @@ class MessageService {
       ],
     }).sort({ createdAt: 1 });
   }
+
+  public async deleteMessage(id: string): Promise<boolean> {
+    try {
+      const deletedMessage = await Message.findByIdAndDelete(id);
+      return true;
+    } catch (error) {
+      console.error("Error deleting message:", error);
+      throw Boom.badRequest("Error deleting message");
+    }
+  }
+
+  public async deleteConversation(sender: string, receiver: string): Promise<boolean> {
+    try {
+      const deletedMessage = await Message.deleteMany({
+        $or: [
+          { sender, receiver },
+          { sender: receiver, receiver: sender },
+        ],
+      });
+      return true;
+    } catch (error) {
+      console.error("Error deleting message:", error);
+      throw Boom.badRequest("Error deleting message");
+    }
+  }
 }
 
 export default MessageService;

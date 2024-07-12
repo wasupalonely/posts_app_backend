@@ -8,7 +8,7 @@ class PostService {
 
   private userService = new UserService();
   async getPosts() {
-    const posts = await Post.find();
+    const posts = await Post.find().sort({ createdAt: -1 });
     return posts;
   }
 
