@@ -37,7 +37,7 @@ export const initChat = (server: http.Server) => {
     socket.on("privateMessage", async (receiverId, message) => {
       const msg = await messageService.saveMessage(socket.data.user.id, receiverId, message);
       const room = [socket.data.user.id, receiverId].sort().join('-');
-      io.to(room).emit("privateMessage", { sender: socket.data.user.username, message, createdAt: msg.createdAt });
+      io.to(room).emit("privateMessage", { sender: socket.data.user.id, message, createdAt: msg.createdAt });
     });
 
     socket.on("disconnect", () => {

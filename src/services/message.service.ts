@@ -9,6 +9,7 @@ class MessageService {
     message: string,
   ): Promise<IMessage> {
     try {
+      console.log("Sender:", sender, "Receiver:", receiver, "Message:", message);
       const msg = new Message({
         sender,
         receiver,
