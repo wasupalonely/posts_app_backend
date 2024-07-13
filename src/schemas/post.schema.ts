@@ -37,3 +37,7 @@ export const getPostsSchema = Joi.object({
 export const likePostSchema = Joi.object({
     userId: id.required()
 })
+
+export const getBookmarksSchema = Joi.object({
+    userId: id.required()
+})

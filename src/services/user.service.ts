@@ -72,11 +72,15 @@ class UserService {
 
       if (user.bookmarks?.includes(postId)) {
         user.bookmarks = user.bookmarks?.filter(bookmark => bookmark.toString() !== postId);
+        post.bookmarks = post.bookmarks?.filter(bookmark => bookmark.toString() !== id);
+        await post.save();
         await user.save();
         return user;
       }
 
+      post.bookmarks?.push(id);
       user.bookmarks?.push(postId);
+      await post.save();
       await user.save();
       return user;
     } catch (error) {

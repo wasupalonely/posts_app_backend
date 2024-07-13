@@ -21,6 +21,7 @@ export interface IPost {
   content: string;
   media?: string[];
   likes: string[];
+  bookmarks: string[];
   comments: IComment[];
   createdAt: Date;
   updatedAt: Date;

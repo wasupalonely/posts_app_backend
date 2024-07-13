@@ -6,6 +6,7 @@ const PostSchema: Schema = new Schema({
     content: { type: String, required: true },
     media: [String],
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    bookmarks: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
