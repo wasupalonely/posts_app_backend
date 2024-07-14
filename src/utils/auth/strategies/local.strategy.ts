@@ -2,8 +2,9 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import UserService from '../../../services/user.service';
 import Boom from '@hapi/boom';
 import bcrypt from 'bcrypt';
+import AuthService from '../../../services/auth.service';
 
-const userService = new UserService();
+const authService = new AuthService();
 
 const strategy = new LocalStrategy(
   {
@@ -12,21 +13,8 @@ const strategy = new LocalStrategy(
   },
   async (identifier, password, done) => {
     try {
-      const user = await userService.getUserByIdentifier(identifier);
-      
-      if (!user) {
-        return done(Boom.unauthorized('Invalid credentials'), false);
-      }
-      
-      const isMatch = await bcrypt.compare(password, user.password);
-      
-      if (!isMatch) {
-        return done(Boom.unauthorized('Invalid credentials'), false);
-      }
-
-      const { password: _, ...userWithoutPassword } = user.toObject()
-
-      return done(null, userWithoutPassword);
+      const user = await authService.getUser(identifier, password);
+      return done(null, user);
     } catch (error) {
       done(error, false);
     }

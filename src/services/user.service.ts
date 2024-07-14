@@ -139,7 +139,7 @@ class UserService {
     }
   }
 
-  async updateUser(id: string, user: Partial<typeof User>) {
+  async updateUser(id: string, user: Partial<IUser>) {
     try {
       const updatedUser = await User.findByIdAndUpdate(id, user, { new: true });
       return updatedUser;

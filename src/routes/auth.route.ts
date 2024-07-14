@@ -1,19 +1,20 @@
 import express, { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import jwt from "jsonwebtoken";
-import env from "../config/config";
 import validatorHandler from "../middlewares/validator.handler";
-import { registerUserSchema } from "../schemas/user.schema";
 import UserService from "../services/user.service";
 import { IUser } from "../types";
 import Boom from "@hapi/boom";
+import AuthService from "../services/auth.service";
+import { changePasswordSchema, loginSchema, recoverySchema, registerSchema } from '../schemas/auth.schema';
 
 const authRoute = express.Router();
 
+const authService = new AuthService();
 const userService = new UserService();
 
 authRoute.post(
   "/login",
+  validatorHandler(loginSchema, "body"),
   passport.authenticate("local", { session: false }),
   (req, res, next) => {
     try {
@@ -21,17 +22,7 @@ authRoute.post(
         return next(Boom.unauthorized("Invalid credentials"));
       }
       const user = req.user as IUser;
-      const payload = {
-        sub: user._id,
-        username: user.username,
-        id: user._id,
-        // role: user.role,
-      };
-      const token = jwt.sign(payload, env.JWT_SECRET);
-      res.json({
-        user,
-        token,
-      });
+      res.json(authService.signToken(user));
     } catch (error) {
       next(error);
     }
@@ -40,7 +31,7 @@ authRoute.post(
 
 authRoute.post(
   '/register',
-  validatorHandler(registerUserSchema, 'body'),
+  validatorHandler(registerSchema, 'body'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { username, password, email } = req.body;
@@ -54,5 +45,31 @@ authRoute.post(
     }
   }
 );
+
+authRoute.post(
+  '/recovery',
+  validatorHandler(recoverySchema, 'body'), 
+  async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.body;
+    const rta = await authService.sendRecoveryEmail(email);
+    res.json(rta);
+  } catch (error) {
+    next(error);
+  }
+});
+
+authRoute.post(
+  '/change-password',
+  validatorHandler(changePasswordSchema, 'body'), 
+  async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { token, newPassword } = req.body;
+    const rta = await authService.changePassword(token, newPassword);
+    res.json(rta);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default authRoute;

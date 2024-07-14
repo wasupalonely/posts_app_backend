@@ -7,6 +7,7 @@ export interface IUser {
   bookmarks?: string[];
   _id?: string;
   username: string;
+  recoveryToken?: string | null;
   password: string;
   email: string;
   profilePicture?: string;
@@ -43,7 +44,7 @@ export interface ICategory {
   updatedAt: Date;
 }
 
-interface IMessage extends Document {
+export interface IMessage extends Document {
   sender: string;
   receiver: string;
   message: string;

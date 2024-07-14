@@ -14,6 +14,9 @@ const env = cleanEnv(process.env, {
   CLOUDINARY_CLOUD_NAME: str(),
   CLOUDINARY_API_KEY: str(),
   CLOUDINARY_API_SECRET: str(),
+  EMAIL_MAILER: str(),
+  PASSWORD_MAILER: str(),
+  RECOVER_PASSWORD_SECRET: str(),
 });
 
 export default env;

@@ -6,6 +6,7 @@ const UserSchema: Schema = new Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  recoveryToken: { type: String, required: false, nullable: true },
   profilePicture: { type: String },
   bio: { type: String },
   role: { type: String, enum: ["user", "admin"], default: "user" },
