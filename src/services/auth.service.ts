@@ -44,7 +44,7 @@ class AuthService {
     const user = await userService.getUserByIdentifier(email);
 
     if (!user) {
-      throw Boom.unauthorized("Invalid credentials");
+      throw Boom.unauthorized("No hay un usuario con este correo!");
     }
 
     const payload = {
@@ -54,7 +54,7 @@ class AuthService {
 
     const token = jwt.sign(payload, env.RECOVER_PASSWORD_SECRET, { expiresIn: "15m" });
 
-    const url = `http://localhost:5173/api/v1/auth/recovery/?token=${token}`;
+    const url = `http://localhost:5173/recovery?token=${token}`;
     await userService.updateUser(user._id, { recoveryToken: token });
 
     const mail = {
@@ -79,12 +79,12 @@ class AuthService {
       if (!env.RECOVER_PASSWORD_SECRET) {
         throw new Error('RECOVER_PASSWORD_SECRET is not defined');
       }
-  
+
       const payload = jwt.verify(token, env.RECOVER_PASSWORD_SECRET) as JwtPayload;
       if (typeof payload !== 'object' || !payload.sub) {
         throw Boom.unauthorized('Invalid token payload');
       }
-  
+
       const user = await userService.getUserById(payload.sub);
       if (user?.recoveryToken !== token) {
         throw Boom.unauthorized('Invalid token');
