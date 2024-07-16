@@ -18,6 +18,10 @@ app.use(cors({
     optionsSuccessStatus: 204,
 }))
 
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  next();
+});
 // Initialaze passport
 import "./utils/auth"
 import { initChat } from "./chat";
