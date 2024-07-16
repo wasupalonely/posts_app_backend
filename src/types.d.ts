@@ -31,6 +31,7 @@ export interface IPost {
 export interface IComment {
   postId: string;
   authorId: string;
+  authorUsername?: string;
   content: string;
   likes: string[];
   createdAt: Date;

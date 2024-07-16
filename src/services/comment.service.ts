@@ -1,7 +1,12 @@
 import Boom from "@hapi/boom";
 import { Comment } from "../models/Comment";
+import PostService from "./post.service";
+import { IComment } from "../types";
+import UserService from "./user.service";
 
 class CommentService {
+  private postsService = new PostService();
+  private usersService = new UserService();
   async getComments() {
     try {
       const comments = await Comment.find();
@@ -59,12 +64,24 @@ class CommentService {
     }
   }
 
-  async createComment(comment: typeof Comment) {
+  async createComment(comment: IComment) {
     try {
       const newComment = await Comment.create(comment);
+      const user = await this.usersService.getUserById(comment.authorId);
+      if (!user) {
+        throw Boom.notFound("User not found");
+      }
+      newComment.authorUsername = user.username;
+      newComment.save();
+      const post = await this.postsService.getPostById(comment.postId);
+      if (!post) {
+        throw Boom.notFound("Post not found");
+      }
+      post.comments.push(newComment);
+      await post.save();
       return newComment;
-    } catch (error) {
-      throw Boom.badRequest("Error creating comment");
+    } catch (error: any) {
+      throw Boom.badRequest("Error creating comment", error.message);
     }
   }
 
