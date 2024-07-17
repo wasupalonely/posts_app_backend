@@ -33,11 +33,7 @@ export const registerUserSchema = Joi.object({
 export const updateUserSchema = Joi.object({
     username: username,
     email: email,
-    password: password,
-    profilePicture: profilePicture,
     bio: bio,
-    createdAt: createdAt,
-    updatedAt: updatedAt
 });
 
 export const toggleFollowSchema = Joi.object({

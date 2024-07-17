@@ -100,8 +100,8 @@ userRouter.post(
 userRouter.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  validatorHandler(getUserSchema, "params"),
-  validatorHandler(updateUserSchema, "body"),
+  // validatorHandler(getUserSchema, "params"),
+  // validatorHandler(updateUserSchema, "body"),
   async (req, res, next) => {
     try {
       const { id } = req.params;
