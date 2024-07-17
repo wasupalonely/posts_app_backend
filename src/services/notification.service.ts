@@ -78,6 +78,20 @@ class NotificationSerivce {
       throw Boom.badRequest("Error getting notifications");
     }
   }
+
+  async updateNotification(id: string, notification: INotification) {
+    try {
+      const updatedNotification = await Notification.findByIdAndUpdate(
+        id,
+        notification,
+        { new: true },
+      );
+      return updatedNotification;
+    } catch (error: any) {
+      console.log("Error updating notification:", error.message);
+      throw Boom.badRequest("Error updating notification");
+    }
+  }
 }
 
 export default NotificationSerivce;
