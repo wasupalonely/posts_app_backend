@@ -43,6 +43,21 @@ postRouter.get(
   },
 );
 
+postRouter.get(
+  "/author/:id",
+  passport.authenticate("jwt", { session: false }),
+  validatorHandler(getPostsSchema, "params"),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const posts = await postService.getPostsByAuthorId(id);
+      res.status(200).json(posts);
+    } catch (err: any) {
+      next(err);
+    }
+  },
+)
+
 postRouter.post(
   "/",
   passport.authenticate("jwt", { session: false }),
