@@ -10,7 +10,7 @@ class NotificationSerivce {
   async createNotification(notification: INotification) {
     try {
       const sender = await this.userService.getUserByUsername(notification.from);
-      const 
+      // const 
       const newNotification = await Notification.create(notification)
       return newNotification;
     } catch (error) {
