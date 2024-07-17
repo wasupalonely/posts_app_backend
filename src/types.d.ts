@@ -52,3 +52,16 @@ export interface IMessage extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface INotification extends Document {
+  title: string;
+  content: string;
+  seen: boolean;
+  to: string;
+  from: string;
+  type: string;
+  actionUrl?: string;
+  metadata?: Map<string, string>;
+  createdAt: Date;
+  updatedAt: Date;
+}

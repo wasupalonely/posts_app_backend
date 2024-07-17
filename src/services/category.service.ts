@@ -1,5 +1,6 @@
 import Boom from "@hapi/boom";
 import { Category } from "../models/Category";
+import { ICategory } from "../types";
 
 class CategoryService {
   async getAllCategories() {
@@ -25,7 +26,7 @@ class CategoryService {
     }
   }
 
-  async createCategory(category: typeof Category) {
+  async createCategory(category: ICategory) {
     try {
       const newCategory = await Category.create(category)
       return newCategory
