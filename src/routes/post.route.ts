@@ -18,8 +18,15 @@ const postService = new PostService();
 const upload = multer({ dest: "uploads/" });
 
 postRouter.get("/", async (req, res) => {
-  const posts = await postService.getPosts();
-  res.json(posts);
+  const page: number = parseInt(req.query.page as string, 10) || 1;
+  const limit: number = parseInt(req.query.limit as string, 10) || 10;
+
+  try {
+    const posts = await postService.getPosts(page, limit);
+    res.json(posts);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 postRouter.get(
