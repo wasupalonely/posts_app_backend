@@ -8,6 +8,7 @@ import commentRouter from "./comment.route";
 import swaggerUi from 'swagger-ui-express';
 import authRoute from "./auth.route";
 import messageRouter from "./message.route";
+import notificationRoute from "./notification.route";
 
 function routerApi(app: Application) {
   const router = express.Router()
@@ -18,6 +19,7 @@ function routerApi(app: Application) {
   router.use("/comments", commentRouter)
   router.use("/auth", authRoute)
   router.use("/chat", messageRouter)
+  router.use("/notifications", notificationRoute)
 
   router.use('/api-docs', swaggerUi.serve, async (req: Request, res: Response) => {
     return res.send(swaggerUi.generateHTML(await import("./../config/swagger.json")))
