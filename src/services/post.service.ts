@@ -8,14 +8,14 @@ class PostService {
   private userService = new UserService();
   async getPosts(page: number, limit: number) {
     const skip = (page - 1) * limit;
-  
+
     const posts = await Post.find()
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
-  
+
     return posts;
-  }  
+  }
 
   async getPostById(id: string) {
     try {
@@ -23,6 +23,15 @@ class PostService {
       return post;
     } catch (error: any) {
       throw Boom.notFound("Post not found");
+    }
+  }
+
+  async getPostsByAuthorId(authorId: string) {
+    try {
+      const posts = await Post.find({ authorId });
+      return posts;
+    } catch (error: any) {
+      throw Boom.notFound("Posts not found");
     }
   }
 
