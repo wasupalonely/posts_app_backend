@@ -6,10 +6,16 @@ import { uploadToCloudinary } from "../config/cloudinary.config";
 
 class PostService {
   private userService = new UserService();
-  async getPosts() {
-    const posts = await Post.find().sort({ createdAt: -1 });
+  async getPosts(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+  
+    const posts = await Post.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+  
     return posts;
-  }
+  }  
 
   async getPostById(id: string) {
     try {
