@@ -47,3 +47,8 @@ PostApp proporciona la infraestructura necesaria para la aplicación web de Post
 ## Licencia
 
 Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+## Integrantes
+- Santiago Jara Hernandez
+- Santiago Andrés Ordoñez Puentes
+- Juan Diego Macías Vargas
